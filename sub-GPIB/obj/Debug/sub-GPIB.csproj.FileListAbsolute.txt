@@ -1,0 +1,7 @@
+C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\bin\Debug\sub-GPIB.exe.config
+C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\bin\Debug\sub-GPIB.exe
+C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\bin\Debug\sub-GPIB.pdb
+C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\obj\Debug\sub-GPIB.csproj.CoreCompileInputs.cache
+C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\obj\Debug\sub-GPIB.exe
+C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\obj\Debug\sub-GPIB.pdb
+C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\obj\Debug\sub-GPIB.csprojAssemblyReference.cache
