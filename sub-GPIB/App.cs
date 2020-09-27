@@ -7,16 +7,20 @@ namespace sub_GPIB
 
         static void Main(string[] args)
         {
-
             double[] jValues1 = Utility.JonesString2Double(Utility.text_J1);
             double[] jValues2 = Utility.JonesString2Double(Utility.text_J2);
 
             JonesMatPol mat1 = Utility.JonesDoubleArray2JonesMat(jValues1);
             JonesMatPol mat2 = Utility.JonesDoubleArray2JonesMat(jValues2);
 
-            CMath.PrintJonesMAT(CMath.Pol2Car(mat1));
+            JonesMatCar J1 = CMath.Pol2Car(mat1);
+            JonesMatCar J1Inv = CMath.Inverse(J1);
+
+            JonesMatCar J2 = CMath.Pol2Car(mat2);
+
+            JonesMatCar Jw1w2 = J2 * J1Inv;
+            CMath.Print(Jw1w2);
             Console.WriteLine();
-            CMath.PrintJonesMAT(CMath.Pol2Car(mat2));
 
             Console.Read();
         }

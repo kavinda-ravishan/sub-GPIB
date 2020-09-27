@@ -125,6 +125,7 @@ namespace sub_GPIB
             return jonesMat;
         }
 
+        //Jones double array comes with angle degries function convert it to red
         public static JonesMatPol JonesDoubleArray2JonesMat(double[] jonesValues)
         {
             JonesMatPol mat;
