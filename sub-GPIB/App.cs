@@ -18,10 +18,15 @@ namespace sub_GPIB
 
             JonesMatCar J2 = CMath.Pol2Car(mat2);
 
-            JonesMatCar Jw1w2 = J2 * J1Inv;
-            CMath.Print(Jw1w2);
-            Console.WriteLine();
+            JonesMatCar J1_J2Inv = J2 * J1Inv;
 
+            ComplexCar[] complexCars = CMath.Eigenvalues(J1_J2Inv);
+
+            CMath.Print(complexCars[1]);
+            Console.WriteLine();
+            CMath.Print(complexCars[0]);
+            Console.WriteLine();
+            
             Console.Read();
         }
     }

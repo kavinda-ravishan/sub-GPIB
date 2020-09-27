@@ -37,6 +37,14 @@ namespace sub_GPIB
 
             return temp;
         }
+        public static ComplexCar operator /(ComplexCar c1, double c)
+        {
+            ComplexCar temp;
+            temp.real = c1.real / c;
+            temp.imag = c1.imag / c;
+
+            return temp;
+        }
         public static ComplexCar operator *(ComplexCar c1, ComplexCar c2)
         {
             ComplexCar temp;
@@ -230,5 +238,33 @@ namespace sub_GPIB
             return JInv;
         }
 
+        public static double abs(ComplexCar complexCar)
+        {
+            return Math.Sqrt((complexCar.real * complexCar.real) + (complexCar.imag * complexCar.imag));
+        }
+
+        public static ComplexCar Sqrt(ComplexCar complexCar)
+        {
+            ComplexPol complexPol = Car2Pol(complexCar);
+            ComplexCar complex;
+
+            complex.real = Math.Sqrt(complexPol.mod) * Math.Cos(complexPol.ang / 2);
+            complex.imag = Math.Sqrt(complexPol.mod) * Math.Sin(complexPol.ang / 2);
+
+            return complex;
+        }
+
+        public static ComplexCar[] Eigenvalues(JonesMatCar jonesMatCar)
+        {
+            ComplexCar[] complexCar = new ComplexCar[2];
+
+            ComplexCar a = (jonesMatCar.J11 + jonesMatCar.J22);
+            ComplexCar b = Sqrt((a * a) + (4 * ((jonesMatCar.J12 * jonesMatCar.J21) - (jonesMatCar.J11 * jonesMatCar.J22))));
+
+            complexCar[0] = (a + b) / 2;
+            complexCar[1] = (a - b) / 2;
+
+            return complexCar;
+        }
     }
 }
