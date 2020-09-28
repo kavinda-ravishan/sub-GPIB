@@ -117,15 +117,15 @@ namespace sub_GPIB
 
         public static double[] JonesString2Double(string text)
         {
-            string[] values = Utility.DataSeparator(text, 6, 14);
+            string[] values = DataSeparator(text, 6, 14);
 
-            string[] data = Utility.JM_filter(values);
+            string[] data = JM_filter(values);
 
             double[] jonesMat = new double[8];
 
             for (int i = 0; i < 8; i++)
             {
-                jonesMat[i] = System.Convert.ToDouble(data[i]);
+                jonesMat[i] = Convert.ToDouble(data[i]);
             }
 
             return jonesMat;
@@ -156,7 +156,7 @@ namespace sub_GPIB
             return C / (wavelength * 1000);
         }
 
-        public static double DGD(string j1, string j2, double w1, double w2)
+        public static double[] DGD(string j1, string j2, double w1, double w2)
         {
             double[] jValues1 = JonesString2Double(j1);
             double[] jValues2 = JonesString2Double(j2);
@@ -183,7 +183,9 @@ namespace sub_GPIB
             double f1 = Wavelength2Frequency(w1);
             double f2 = Wavelength2Frequency(w2);
 
-            return Ang / (f1 - f2);
+            double[] DGD_W = { Ang / (f1 - f2), (w1 + w2) / 2 };
+
+            return DGD_W;
         }
     }
 }
