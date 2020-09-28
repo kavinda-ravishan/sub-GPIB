@@ -169,7 +169,12 @@ namespace sub_GPIB
 
         public static double Deg2Red(double deg)
         {
-            return (Math.PI * deg) / 180;
+            return (2 * Math.PI * (deg % 360)) / 360;
+        }
+
+        public static double Red2Deg(double red)
+        {
+            return (360 * (red % (2 * Math.PI))) / (2 * Math.PI);
         }
 
         public static ComplexCar Pol2Car(ComplexPol complexPol)
@@ -238,7 +243,7 @@ namespace sub_GPIB
             return JInv;
         }
 
-        public static double abs(ComplexCar complexCar)
+        public static double Abs(ComplexCar complexCar)
         {
             return Math.Sqrt((complexCar.real * complexCar.real) + (complexCar.imag * complexCar.imag));
         }
