@@ -4,53 +4,68 @@ namespace sub_GPIB
 {
     static class Program
     {
-        static void DGD(double w1,double w2, string jString1, string jString2)
-        {
-            Console.WriteLine(((w1 + w2) / 2).ToString() + "____" + jString1 + "____" + jString2);
-        }
-
         static void Main(string[] args)
         {
-            //double[] dgd = Utility.DGD(Utility.text_J1, Utility.text_J2, 1550, 1551);
-
-            //Console.WriteLine(dgd[0]);
-            //Console.WriteLine(dgd[1]);
-
-            double start = 1550;
-            double end = 1561;
+            double start = 1545;
+            double end = 1555;
             double stepSize = 1;
 
             int steps = (int)((end - start) / stepSize) + 3;
 
             double[] wavelenght = new double[steps];
 
+            //find wavelenghts need to mesure
             for (int i = 0; i < steps; i++)
             {
                 wavelenght[i] = (start - stepSize) + (i * stepSize);
             }
 
+            //for save PAT9300 JM information
             string[] jStrings = new string[steps];
 
-            for (int i = 0; i < steps; i++)
-            {
-                jStrings[i] = ". . .";
-            }
+            double[] DGDval = new double[2];
+            double[,] DGDs = new double[steps - 2, 2];
 
             for (int i = 0; i < steps; i++)
             {
                 if (i < 2)
                 {
-                    Console.WriteLine("Read - " + wavelenght[i].ToString());
-                    jStrings[i] = i.ToString() + "_" + wavelenght[i].ToString(); // read from pol
+                    Console.WriteLine("Set Source  WL - " + wavelenght[i].ToString());
+                    Console.WriteLine("Set PAT9000 WL - " + wavelenght[i].ToString());
+                    System.Threading.Thread.Sleep(1000);
+
+                    Console.WriteLine("Read JM        - " + wavelenght[i].ToString());
+                    jStrings[i] = i.ToString();//put JM data here
+
+                    Console.WriteLine();
                 }
                 else
                 {
-                    Console.WriteLine("Read - " + wavelenght[i].ToString());
-                    jStrings[i] = i.ToString() + "_" + wavelenght[i].ToString(); // read from pol
+                    Console.WriteLine("Set Source  WL - " + wavelenght[i].ToString());
+                    Console.WriteLine("Set PAT9000 WL - " + wavelenght[i].ToString());
+                    System.Threading.Thread.Sleep(1000);
 
-                    DGD(wavelenght[i - 2], wavelenght[i], jStrings[i - 2], jStrings[i]);
+                    Console.WriteLine("Read JM        - " + wavelenght[i].ToString());
+                    jStrings[i] = i.ToString();//put JM data here
+
+                    DGDval = Utility.DGD(Utility.text_J1, Utility.text_J2, wavelenght[i - 2], wavelenght[i]);//put jString here
+                    DGDs[i - 2, 0] = DGDval[0];
+                    DGDs[i - 2, 1] = DGDval[1];
+
+                    Console.WriteLine(DGDval[0]);
+                    Console.WriteLine(DGDval[1]);
+                    Console.WriteLine();
                 }
             }
+
+            //Console.WriteLine();
+
+            //for (int i = 0; i < steps - 2; i++)
+            //{
+            //    Console.WriteLine(DGDs[i, 0]);
+            //    Console.WriteLine(DGDs[i, 1]);
+            //    Console.WriteLine();
+            //}
 
             Console.Read();
         }
