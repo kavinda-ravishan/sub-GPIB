@@ -13,11 +13,17 @@ namespace sub_GPIB
 
         public static string text_SB = "S1  0.849;S2  0.528;S3  0.007;PDB -76.34;1000;E00\n";
 
+        public static string text_J1_1 = "J[11]  0.902 -45.363;J[12]  0.383 -179.843;J[21]  0.420 -4.662;J[22]  0.931 46.226;1000;E00\n";
+        //1550.01 nm
+        public static string text_J1_2 = "J[11]  0.907 -44.460;J[12]  0.405 -178.349;J[21]  0.416 -3.936;J[22]  0.917 44.923;1000;E00\n";
+
         //1550.00 nm
         public static string text_J1 = "J[11]  0.870  7.368;J[12]  0.557 -138.518;J[21]  0.646 -39.584;J[22]  0.736 -8.434;1000;E00\n";
         //1551.00 
         public static string text_J2 = "J[11]  0.797 -64.374;J[12]  0.605 -66.324;J[21]  0.600 -111.640;J[22]  0.799 63.215;1000;E00\n";
         //-----------------------------------------------------------------------------------------------------------------------------------//
+
+        public const double C = 299792458;
 
         public static string[] DataSeparator(string text, int infoS, int valS)
         {
@@ -143,6 +149,41 @@ namespace sub_GPIB
             mat.J22.ang = CMath.Deg2Red(jonesValues[7]);
 
             return mat;
+        }
+
+        public static double Wavelength2Frequency(double wavelength)//wavelength in nm and frequency in THz
+        {
+            return C / (wavelength * 1000);
+        }
+
+        public static double DGD(string j1, string j2, double w1, double w2)
+        {
+            double[] jValues1 = JonesString2Double(j1);
+            double[] jValues2 = JonesString2Double(j2);
+
+            JonesMatPol mat1 = JonesDoubleArray2JonesMat(jValues1);
+            JonesMatPol mat2 = JonesDoubleArray2JonesMat(jValues2);
+
+            JonesMatCar J1 = CMath.Pol2Car(mat1);
+            JonesMatCar J1Inv = CMath.Inverse(J1);
+
+            JonesMatCar J2 = CMath.Pol2Car(mat2);
+
+            JonesMatCar J1_J2Inv = J2 * J1Inv;
+
+            ComplexCar[] complexCars = CMath.Eigenvalues(J1_J2Inv);
+
+            ComplexPol[] complexPols = new ComplexPol[2];
+
+            complexPols[0] = CMath.Car2Pol(complexCars[0]);
+            complexPols[1] = CMath.Car2Pol(complexCars[1]);
+
+            double Ang = complexPols[0].ang - complexPols[1].ang;
+
+            double f1 = Wavelength2Frequency(w1);
+            double f2 = Wavelength2Frequency(w2);
+
+            return Ang / (f1 - f2);
         }
     }
 }
