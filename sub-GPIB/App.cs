@@ -25,29 +25,9 @@ namespace sub_GPIB
             Device PolarizationAnalyzer = new Device(0, 9, 0);
             Device Source = new Device(0, 24, 0);
 
-            //string outMsgPol = "S0;";
-
-            //1500nm, 1.5um and 1.5e-6m are all equivalent.
-
-            //string outMsgSrc = MsgWaveLenghtSrc(1550.00);
-            //string outMsgSrc = MsgPower(750);
-
-            //PolarizationAnalyzer.Write(Utility.ReplaceCommonEscapeSequences(MsgWaveLenghtPol(1550.12)));
-            //Console.WriteLine(MsgWaveLenghtPol(1550.12));
-
-            //Source.Write(Utility.ReplaceCommonEscapeSequences(outMsgSrc));
-
-            //string inMsgPol;
-            //string inMsgSrc;
-
-            //inMsgPol = Utility.InsertCommonEscapeSequences(PolarizationAnalyzer.ReadString());
-            //inMsgSrc = Utility.InsertCommonEscapeSequences(Source.ReadString());
-
-
-
-            double start = 1545;
-            double end = 1550;
-            double stepSize = 1;
+            double start = 1550;
+            double end = 1551.1;
+            double stepSize = 0.01;
 
             int steps = (int)((end - start) / stepSize) + 3;
 
@@ -65,10 +45,13 @@ namespace sub_GPIB
             double[] DGDval = new double[2];
             double[,] DGDs = new double[steps - 2, 2];
 
-            int delay = 5000;
+            int delay = 1000;
 
             Source.Write(Utility.ReplaceCommonEscapeSequences(MsgPowerSrc(1000))); // set power to 1000uW
             Source.Write(Utility.ReplaceCommonEscapeSequences(":OUTPut 1")); // turn on the laser
+            Console.WriteLine("Set Source  WL - " + start.ToString());
+            Source.Write(Utility.ReplaceCommonEscapeSequences(MsgWaveLenghtSrc(start)));//change wavelength source
+            PolarizationAnalyzer.Write(Utility.ReplaceCommonEscapeSequences("PO;X;"));
 
             for (int i = 0; i < steps; i++)
             {
@@ -112,14 +95,6 @@ namespace sub_GPIB
 
             Source.Write(Utility.ReplaceCommonEscapeSequences(":OUTPut 0")); // turn off the laser
 
-            //Console.WriteLine();
-
-            //for (int i = 0; i < steps - 2; i++)
-            //{
-            //    Console.WriteLine(DGDs[i, 0]);
-            //    Console.WriteLine(DGDs[i, 1]);
-            //    Console.WriteLine();
-            //}
 
             PolarizationAnalyzer.Dispose();
             Source.Dispose();
