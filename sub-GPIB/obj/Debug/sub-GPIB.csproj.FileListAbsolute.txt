@@ -5,3 +5,9 @@ C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\obj\De
 C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\obj\Debug\sub-GPIB.exe
 C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\obj\Debug\sub-GPIB.pdb
 C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\obj\Debug\sub-GPIB.csprojAssemblyReference.cache
+C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\bin\Debug\NationalInstruments.Common.dll
+C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\bin\Debug\NationalInstruments.NI4882.dll
+C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\bin\Debug\NationalInstruments.Common.xml
+C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\bin\Debug\NationalInstruments.NI4882.xml
+C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\obj\Debug\sub-GPIB.exe.config
+C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\obj\Debug\sub-GPIB.csproj.CopyComplete

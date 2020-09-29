@@ -22,6 +22,14 @@ namespace sub_GPIB
         //1551.00 
         public static string text_J2 = "J[11]  0.797 -64.374;J[12]  0.605 -66.324;J[21]  0.600 -111.640;J[22]  0.799 63.215;1000;E00\n";
         //-----------------------------------------------------------------------------------------------------------------------------------//
+        public static string ReplaceCommonEscapeSequences(string s)
+        {
+            return s.Replace("\\n", "\n").Replace("\\r", "\r");
+        }
+        public static string InsertCommonEscapeSequences(string s)
+        {
+            return s.Replace("\n", "\\n").Replace("\r", "\\r");
+        }
 
         public const double C = 299792458;
 
