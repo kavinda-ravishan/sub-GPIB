@@ -248,6 +248,14 @@ namespace sub_GPIB
             return Math.Sqrt((complexCar.real * complexCar.real) + (complexCar.imag * complexCar.imag));
         }
 
+        public static double Abs(double value)
+        {
+            if (value >= 0)
+                return value;
+            else
+                return -1 * value;
+        }
+
         public static ComplexCar Sqrt(ComplexCar complexCar)
         {
             ComplexPol complexPol = Car2Pol(complexCar);

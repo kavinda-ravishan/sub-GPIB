@@ -9,6 +9,7 @@ namespace sub_GPIB
     static class Utility
     {
         //---------------------- For testing ------------------------------------------------------------------------------------------------//
+        /*
         public static string text_S0 = "VAL00  77.204;VAL01  16.427;VAL02   0.295;VAL03  39.486;VAL04   0.371;VAL05   0.121;VAL06  56.222;VAL07   0.000;VAL08  10.609;VAL09  -0.758;VAL10   0.363;VAL11   0.543;VAL12 -75.284;VAL13 -71.248;VAL14 -73.429;1000;E08\n";
 
         public static string text_SB = "S1  0.849;S2  0.528;S3  0.007;PDB -76.34;1000;E00\n";
@@ -21,6 +22,7 @@ namespace sub_GPIB
         public static string text_J1 = "J[11]  0.870  7.368;J[12]  0.557 -138.518;J[21]  0.646 -39.584;J[22]  0.736 -8.434;1000;E00\n";
         //1551.00 
         public static string text_J2 = "J[11]  0.797 -64.374;J[12]  0.605 -66.324;J[21]  0.600 -111.640;J[22]  0.799 63.215;1000;E00\n";
+        */
         //-----------------------------------------------------------------------------------------------------------------------------------//
         public static string ReplaceCommonEscapeSequences(string s)
         {
@@ -164,6 +166,8 @@ namespace sub_GPIB
             return C / (wavelength * 1000);
         }
 
+
+
         public static double[] DGD(string j1, string j2, double w1, double w2)
         {
             double[] jValues1 = JonesString2Double(j1);
@@ -173,13 +177,13 @@ namespace sub_GPIB
             JonesMatPol mat2 = JonesDoubleArray2JonesMat(jValues2);
 
             JonesMatCar J1 = CMath.Pol2Car(mat1);
-            JonesMatCar J1Inv = CMath.Inverse(J1);
-
             JonesMatCar J2 = CMath.Pol2Car(mat2);
 
-            JonesMatCar J1_J2Inv = J2 * J1Inv;
+            JonesMatCar J1Inv = CMath.Inverse(J1);
+            
+            JonesMatCar J2_J1Inv = J2 * J1Inv;
 
-            ComplexCar[] complexCars = CMath.Eigenvalues(J1_J2Inv);
+            ComplexCar[] complexCars = CMath.Eigenvalues(J2_J1Inv);
 
             ComplexPol[] complexPols = new ComplexPol[2];
 
@@ -191,7 +195,7 @@ namespace sub_GPIB
             double f1 = Wavelength2Frequency(w1);
             double f2 = Wavelength2Frequency(w2);
 
-            double[] DGD_W = { Ang / (f1 - f2), (w1 + w2) / 2 };
+            double[] DGD_W = { CMath.Abs(Ang / (f1 - f2)), (w1 + w2) / 2 };
 
             return DGD_W;
         }

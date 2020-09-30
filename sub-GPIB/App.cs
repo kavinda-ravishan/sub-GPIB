@@ -5,6 +5,7 @@ namespace sub_GPIB
 {
     static class Program
     {
+
         static string MsgWaveLenghtSrc(double waveLenght = 1551.120)
         {
             return ":WAVElength " + waveLenght.ToString() + "nm";
@@ -20,14 +21,41 @@ namespace sub_GPIB
             return "L " + waveLenght.ToString() + ";X;";
         }
 
+        static void InitDGDMesure(Device Source, Device PolarizationAnalyzer,double start, double power)
+        {
+            Source.Write(Utility.ReplaceCommonEscapeSequences(MsgPowerSrc(power))); // set power to 1000uW
+            Source.Write(Utility.ReplaceCommonEscapeSequences(":OUTPut 1")); // turn on the laser
+            Console.WriteLine("Set Source  WL - " + start.ToString());
+            Source.Write(Utility.ReplaceCommonEscapeSequences(MsgWaveLenghtSrc(start)));//change wavelength source
+            PolarizationAnalyzer.Write(Utility.ReplaceCommonEscapeSequences("PO;X;"));//Optimizing the polarizer position in the module
+        }
+
+        static string MesureDGD(Device Source, Device PolarizationAnalyzer, double wavelenght, int delay)
+        {
+            string jString;
+
+            Console.WriteLine("Set Source  WL - " + wavelenght.ToString());
+            Source.Write(Utility.ReplaceCommonEscapeSequences(MsgWaveLenghtSrc(wavelenght)));//change wavelength source
+
+            Console.WriteLine("Set PAT9000 WL - " + wavelenght.ToString());
+            PolarizationAnalyzer.Write(Utility.ReplaceCommonEscapeSequences(MsgWaveLenghtPol(wavelenght)));//change wavelength pol
+            System.Threading.Thread.Sleep(delay);
+
+            Console.WriteLine("Read JM        - " + wavelenght.ToString());
+            PolarizationAnalyzer.Write(Utility.ReplaceCommonEscapeSequences("JM;X"));
+            jString = Utility.InsertCommonEscapeSequences(PolarizationAnalyzer.ReadString());//put JM data here
+            Console.WriteLine();
+            return jString;
+        }
+
         static void Main(string[] args)
         {
             Device PolarizationAnalyzer = new Device(0, 9, 0);
             Device Source = new Device(0, 24, 0);
 
             double start = 1550;
-            double end = 1551.1;
-            double stepSize = 0.01;
+            double end = 1553;
+            double stepSize = 1;
 
             int steps = (int)((end - start) / stepSize) + 3;
 
@@ -47,43 +75,19 @@ namespace sub_GPIB
 
             int delay = 1000;
 
-            Source.Write(Utility.ReplaceCommonEscapeSequences(MsgPowerSrc(1000))); // set power to 1000uW
-            Source.Write(Utility.ReplaceCommonEscapeSequences(":OUTPut 1")); // turn on the laser
-            Console.WriteLine("Set Source  WL - " + start.ToString());
-            Source.Write(Utility.ReplaceCommonEscapeSequences(MsgWaveLenghtSrc(start)));//change wavelength source
-            PolarizationAnalyzer.Write(Utility.ReplaceCommonEscapeSequences("PO;X;"));
+            InitDGDMesure(Source, PolarizationAnalyzer, start, 1200);
 
             for (int i = 0; i < steps; i++)
             {
                 if (i < 2)
                 {
-                    Console.WriteLine("Set Source  WL - " + wavelenght[i].ToString());
-                    Source.Write(Utility.ReplaceCommonEscapeSequences(MsgWaveLenghtSrc(wavelenght[i])));//change wavelength source
-
-                    Console.WriteLine("Set PAT9000 WL - " + wavelenght[i].ToString());
-                    PolarizationAnalyzer.Write(Utility.ReplaceCommonEscapeSequences(MsgWaveLenghtPol(wavelenght[i])));//change wavelength pol
-                    System.Threading.Thread.Sleep(delay);
-
-                    Console.WriteLine("Read JM        - " + wavelenght[i].ToString());
-                    PolarizationAnalyzer.Write(Utility.ReplaceCommonEscapeSequences("JM;X"));
-                    jStrings[i] = Utility.InsertCommonEscapeSequences(PolarizationAnalyzer.ReadString());//put JM data here
-
-                    Console.WriteLine();
+                    jStrings[i] = MesureDGD(Source, PolarizationAnalyzer, wavelenght[i], delay);
                 }
                 else
                 {
-                    Console.WriteLine("Set Source  WL - " + wavelenght[i].ToString());
-                    Source.Write(Utility.ReplaceCommonEscapeSequences(MsgWaveLenghtSrc(wavelenght[i])));//change wavelength source
+                    jStrings[i] = MesureDGD(Source, PolarizationAnalyzer, wavelenght[i], delay);
 
-                    Console.WriteLine("Set PAT9000 WL - " + wavelenght[i].ToString());
-                    PolarizationAnalyzer.Write(Utility.ReplaceCommonEscapeSequences(MsgWaveLenghtPol(wavelenght[i])));//change wavelength pol
-                    System.Threading.Thread.Sleep(delay);
-
-                    Console.WriteLine("Read JM        - " + wavelenght[i].ToString());
-                    PolarizationAnalyzer.Write(Utility.ReplaceCommonEscapeSequences("JM;X"));
-                    jStrings[i] = Utility.InsertCommonEscapeSequences(PolarizationAnalyzer.ReadString());//put JM data here
-
-                    DGDval = Utility.DGD(Utility.text_J1, Utility.text_J2, wavelenght[i - 2], wavelenght[i]);//put jString here
+                    DGDval = Utility.DGD(jStrings[i - 2], jStrings[i], wavelenght[i - 2], wavelenght[i]);//put jString here
                     DGDs[i - 2, 0] = DGDval[0];
                     DGDs[i - 2, 1] = DGDval[1];
 
