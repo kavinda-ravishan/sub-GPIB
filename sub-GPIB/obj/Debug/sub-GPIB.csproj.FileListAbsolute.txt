@@ -11,3 +11,4 @@ C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\bin\De
 C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\bin\Debug\NationalInstruments.NI4882.xml
 C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\obj\Debug\sub-GPIB.exe.config
 C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\obj\Debug\sub-GPIB.csproj.CopyComplete
+C:\Users\Kavinda Ravishan\source\repos\kavinda-ravishan\sub-GPIB\sub-GPIB\obj\Debug\sub-GPIB.csproj.ResolveComReference.cache
